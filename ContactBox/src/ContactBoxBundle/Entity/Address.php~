@@ -3,7 +3,6 @@
 namespace ContactBoxBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use ContactBoxBundle\Entity\Person;
 
 /**
@@ -51,15 +50,17 @@ class Address
      */
     private $apartmentNumber;
     
-    /**
-     * @ORM\OneToMany (targetEntity="Person", mappedBy="address")
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="address_type", type="string", length=50)
      */
-    private $persons;
+    private $addressType;
     
-    public function __construct() {
-        $this->persons = new ArrayCollection();
-    }
-
+    /**
+     * @ORM\ManyToOne (targetEntity="Person", inversedBy="address")
+     */
+    private $person;
 
     /**
      * Get id
@@ -161,5 +162,28 @@ class Address
     public function getApartmentNumber()
     {
         return $this->apartmentNumber;
+    }
+
+    /**
+     * Set person
+     *
+     * @param \ContactBoxBundle\Entity\Person $person
+     * @return Address
+     */
+    public function setPerson(\ContactBoxBundle\Entity\Person $person = null)
+    {
+        $this->person = $person;
+
+        return $this;
+    }
+
+    /**
+     * Get person
+     *
+     * @return \ContactBoxBundle\Entity\Person 
+     */
+    public function getPerson()
+    {
+        return $this->person;
     }
 }

@@ -3,7 +3,6 @@
 namespace ContactBoxBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use ContactBoxBundle\Entity\Person;
 
 /**
@@ -51,15 +50,17 @@ class Address
      */
     private $apartmentNumber;
     
-    /**
-     * @ORM\OneToMany (targetEntity="Person", mappedBy="address")
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="address_type", type="string", length=50)
      */
-    private $persons;
+    private $addressType;
     
-    public function __construct() {
-        $this->persons = new ArrayCollection();
-    }
-
+    /**
+     * @ORM\ManyToOne (targetEntity="Person", inversedBy="address")
+     */
+    private $person;
 
     /**
      * Get id
@@ -164,35 +165,48 @@ class Address
     }
 
     /**
-     * Add persons
+     * Set person
      *
-     * @param \ContactBoxBundle\Entity\Person $persons
+     * @param \ContactBoxBundle\Entity\Person $person
      * @return Address
      */
-    public function addPerson(\ContactBoxBundle\Entity\Person $persons)
+    public function setPerson(\ContactBoxBundle\Entity\Person $person = null)
     {
-        $this->persons[] = $persons;
+        $this->person = $person;
 
         return $this;
     }
 
     /**
-     * Remove persons
+     * Get person
      *
-     * @param \ContactBoxBundle\Entity\Person $persons
+     * @return \ContactBoxBundle\Entity\Person 
      */
-    public function removePerson(\ContactBoxBundle\Entity\Person $persons)
+    public function getPerson()
     {
-        $this->persons->removeElement($persons);
+        return $this->person;
     }
 
     /**
-     * Get persons
+     * Set addressType
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @param string $addressType
+     * @return Address
      */
-    public function getPersons()
+    public function setAddressType($addressType)
     {
-        return $this->persons;
+        $this->addressType = $addressType;
+
+        return $this;
+    }
+
+    /**
+     * Get addressType
+     *
+     * @return string 
+     */
+    public function getAddressType()
+    {
+        return $this->addressType;
     }
 }

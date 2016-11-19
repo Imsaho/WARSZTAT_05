@@ -155,15 +155,14 @@ class ContactController extends Controller {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         
-        $form = $this->createAddressForm($person);
+        $form = $this->createAddressForm($address);
         $form->handleRequest($request);
-
         if ($form->isSubmitted()) {
-            $person = $form->getData();
+            $address = $form->getData();
             $em = $this->getDoctrine()->getManager();
-            $em->persist($person);
+            $em->persist($address);
             $em->flush();
-            return new Response("Dodano kontakt");
+            return new Response("Dodano adres");
         }
     }
 

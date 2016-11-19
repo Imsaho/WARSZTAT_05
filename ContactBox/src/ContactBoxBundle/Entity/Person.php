@@ -46,7 +46,7 @@ class Person
     private $description;
     
     /**
-     * @ORM\ManyToOne (targetEntity="Address", inversedBy="persons")
+     * @ORM\OneToMany (targetEntity="Address", mappedBy="person")
      */
     private $address;
     
@@ -67,6 +67,7 @@ class Person
     private $phone;
     
     public function __construct() {
+        $this->address = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->email = new ArrayCollection();
         $this->phone = new ArrayCollection();
@@ -150,29 +151,6 @@ class Person
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set address
-     *
-     * @param \ContactBoxBundle\Entity\Address $address
-     * @return Person
-     */
-    public function setAddress(\ContactBoxBundle\Entity\Address $address = null)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return \ContactBoxBundle\Entity\Address 
-     */
-    public function getAddress()
-    {
-        return $this->address;
     }
 
     /**
@@ -272,5 +250,38 @@ class Person
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * Add address
+     *
+     * @param \ContactBoxBundle\Entity\Address $address
+     * @return Person
+     */
+    public function addAddress(\ContactBoxBundle\Entity\Address $address)
+    {
+        $this->address[] = $address;
+
+        return $this;
+    }
+
+    /**
+     * Remove address
+     *
+     * @param \ContactBoxBundle\Entity\Address $address
+     */
+    public function removeAddress(\ContactBoxBundle\Entity\Address $address)
+    {
+        $this->address->removeElement($address);
+    }
+
+    /**
+     * Get address
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }
