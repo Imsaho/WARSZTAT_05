@@ -62,7 +62,7 @@ class Person
     private $email;
     
     /**
-     * @ORM\OneToMany (targetEntity="Phone", mappedBy="phone")
+     * @ORM\OneToMany (targetEntity="Phone", mappedBy="person")
      */
     private $phone;
     
@@ -239,5 +239,38 @@ class Person
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Add phone
+     *
+     * @param \ContactBoxBundle\Entity\Phone $phone
+     * @return Person
+     */
+    public function addPhone(\ContactBoxBundle\Entity\Phone $phone)
+    {
+        $this->phone[] = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Remove phone
+     *
+     * @param \ContactBoxBundle\Entity\Phone $phone
+     */
+    public function removePhone(\ContactBoxBundle\Entity\Phone $phone)
+    {
+        $this->phone->removeElement($phone);
+    }
+
+    /**
+     * Get phone
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 }

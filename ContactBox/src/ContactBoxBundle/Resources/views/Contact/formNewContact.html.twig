@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}ContactBoxBundle:Contact:newContact{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Contact:newContact page</h1>
+
+{{ form_start(contact_form) }}
+{{ form_widget(contact_form) }}
+{{ form_end(contact_form) }}
+
+{{ form_start(address_form) }}
+{{ form_widget(address_form) }}
+{{ form_end(address_form) }}
+
+
+{% endblock %}

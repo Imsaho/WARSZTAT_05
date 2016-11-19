@@ -62,7 +62,7 @@ class Person
     private $email;
     
     /**
-     * @ORM\OneToMany (targetEntity="Phone", mappedBy="phone")
+     * @ORM\OneToMany (targetEntity="Phone", mappedBy="person")
      */
     private $phone;
     
