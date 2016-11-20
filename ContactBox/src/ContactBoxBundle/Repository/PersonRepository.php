@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class PersonRepository extends EntityRepository
 {
+    public function findByLastName($lastName) {
+        $dql = "SELECT person FROM ContactBoxBundle:Person person
+                                    WHERE person.lastName LIKE :lastName ORDER BY person.lastName ASC";
+        $query = $this->getEntityManager()->createQuery($dql)
+                ->setParameter('lastName', ('%'.$lastName.'%'));
+        $contacts = $query->getResult();
+        return $contacts;
+    }
 }

@@ -3,5 +3,8 @@
 {% block title %}ContactBoxBundle:Contact:showContact{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Contact:showContact page</h1>
+    <h1>Welcome to the Contact:showContact page</h1>
+
+    {% include ('ContactBoxBundle:Contact:single_contact.html.twig') %}
+
 {% endblock %}

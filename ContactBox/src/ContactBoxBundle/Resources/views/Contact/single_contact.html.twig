@@ -1,0 +1,22 @@
+KONTAKT: {{ contact.firstName }} {{ contact.lastName }}<br/>
+GRUPA:
+{% for group in contact.groups %}
+    {{ group.groupName }} | 
+{% endfor %}
+<br/>
+ADRES:
+{% for address in contact.address %}
+    {{ address.addressType}} - {{ address.city }}, 
+    {{ address.street }} {{address.houseNumber }}/{{address.apartmentNumber}}<br/>
+{% endfor %}
+<br/>E-MAIL: {% for email in contact.email %}
+{{ email.emailType }}: {{email.email}}<br/>
+{% endfor %}<br/>
+    TELEFON: <br/>
+    {% for phone in contact.phone %}
+        {{ phone.phoneType }}: {{ phone.phoneNumber }}<br/>
+    {% endfor %}
+    <a href="{{ path('show_by_id', {'id':contact.id}) }}">więcej | </a>
+    <a href="{{ path('edit_get', {'id':contact.id}) }}">edytuj | </a>
+    <a href="{{ path('remove', {'id':contact.id}) }}">usuń</a>
+    <hr/>

@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use ContactBoxBundle\Repository\PersonRepository;
 
 class ContactController extends Controller {
 
@@ -82,6 +83,15 @@ class ContactController extends Controller {
                 ->getForm();
         return $form;
     }
+    
+    public function createSearchForm() {
+        $form = $this->createFormBuilder()
+                ->setMethod("POST")
+                ->add('last_name')
+                ->add('save', SubmitType::class)
+                ->getForm();
+        return $form;
+    }
 
     /**
      * @Route("/new", name="new_get")
@@ -98,6 +108,8 @@ class ContactController extends Controller {
     /**
      * @Route("/new", name="new_post")
      * @Method({"POST"})
+     * @Template("ContactBoxBundle:Contact:message.html.twig")
+
      */
     public function newContactAction(Request $request) {
         $person = new Person();
@@ -109,7 +121,12 @@ class ContactController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($person);
             $em->flush();
-            return new Response("Dodano kontakt");
+
+            $id = $person->getId();
+            $url = $this->generateUrl("show_by_id", array(
+                'id' => $id));
+            $response = $this->redirect($url);
+            return $response;
         }
     }
 
@@ -145,6 +162,7 @@ class ContactController extends Controller {
     /**
      * @Route("/{id}/edit")
      * @Method({"POST"})
+     * @Template("ContactBoxBundle:Contact:message.html.twig")
      */
     public function editContactAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
@@ -160,13 +178,16 @@ class ContactController extends Controller {
                 $person = $form->getData();
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
-                return new Response("Edycja zakończona");
+                //return new Response("Edycja zakończona");
+                return array(
+                    'message' => "Edycja zakończona!");
             }
         }
     }
 
     /**
      * @Route("/{id}/remove", name="remove")
+     * @Template("ContactBoxBundle:Contact:message.html.twig")
      */
     public function removeContactAction($id) {
         $em = $this->getDoctrine()->getManager();
@@ -174,9 +195,11 @@ class ContactController extends Controller {
         if ($person) {
             $em->remove($person);
             $em->flush();
-            return new Response("Kontakt został usunięty!");
+            return array(
+                'message' => "Kontakt został usunięty!");
         } else {
-            return new Response("Brak kontaktu o tym numerze ID.");
+            return array(
+                'message' => "Brak kontaktu o tym numerze ID.");
         }
     }
 
@@ -193,13 +216,31 @@ class ContactController extends Controller {
 
     /**
      * @Route("/", name="show_all")
+     * @Method({"GET"})
      * @Template()
      */
     public function showAllContactsAction() {
+        
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
-        $contacts = $repository->findAll();
+        $contacts = $repository->findBy( [], ['lastName' => 'ASC'] );
+        $searchForm = $this->createSearchForm();
         return array(
-            'contacts' => $contacts);
+            'contacts' => $contacts,
+            'search_form' => $searchForm->createView());
+    }
+    
+    /**
+     * @Route ("/", name="show_by_name")
+     * @Template()
+     * @Method({"POST"})
+     */
+    public function showContactsByNameAction(Request $request, $lastName) {
+        
+        $lastName = $request->request->get('form')['last_name'];
+        
+        $em = $this->getDoctrine()->getManager();
+        $contacts = $em->getRepository("ContactBoxBundle:Person")->findByLastName($lastName);
+        return ['contacts' => $contacts];
     }
 
     /**
@@ -272,12 +313,12 @@ class ContactController extends Controller {
     public function addGroupAction(Request $request, $id) {
         $person = $this->getDoctrine()->getRepository("ContactBoxBundle:Person")->find($id);
         $allGroups = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findAll();
-       
+
         $groupName = $request->request->get('form')['group_name'];
         $group = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findByGroupName($groupName);
-        
+
         //dump($allGroups); die();
-        
+
         $group = new PersonGroup();
 
         $form = $this->createGroupForm($group, $id, $allGroups);
@@ -286,13 +327,13 @@ class ContactController extends Controller {
             //$group = new PersonGroup();
             $group = $form->getData();
             //dump($group); die();
-            
+
             $person->addGroup($group);
             $group->addPerson($person);
-            
+
 //            dump($group); die();
 //            dump($person); die();
-            
+
             $em = $this->getDoctrine()->getManager();
             //$em->persist($person);
             $em->flush();
@@ -301,7 +342,6 @@ class ContactController extends Controller {
     }
 
 }
-
 /*
  * A new entity was found through the relationship 'ContactBoxBundle\Entity\Person#groups' that was not configured to cascade persist operations for entity: ContactBoxBundle\Entity\PersonGroup@000000000bcb555e0000000035ee81a6. To solve this issue: Either explicitly call EntityManager#persist() on this unknown entity or configure cascade persist this association in the mapping for example @ManyToOne(..,cascade={"persist"}). If you cannot find out which entity causes the problem implement 'ContactBoxBundle\Entity\PersonGroup#__toString()' to get a clue.
  */
