@@ -28,14 +28,15 @@ class ContactController extends Controller {
         return $form;
     }
 
-    public function createAddressForm($address) {
+    public function createAddressForm($address, $id) {
         $form = $this->createFormBuilder($address)
-                ->setAction("add_address")
+                ->setAction($this->generateUrl("add_address", array('id' => $id)))
                 ->setMethod("POST")
                 ->add('city')
                 ->add('street')
                 ->add('house_number')
                 ->add('apartment_number')
+                ->add('address_type')
                 ->add('save', SubmitType::class)
                 ->getForm();
         return $form;
@@ -48,12 +49,9 @@ class ContactController extends Controller {
      */
     public function formNewContactAction() {
         $person = new Person();
-        $address = new Address();
         $contactForm = $this->createContactForm($person);
-        $addressForm = $this->createAddressForm($address);
         return array(
-            'contact_form' => $contactForm->createView(),
-            'address_form' => $addressForm->createView());
+            'contact_form' => $contactForm->createView());
     }
 
     /**
@@ -82,9 +80,14 @@ class ContactController extends Controller {
     public function formEditContactAction($id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
-        $form = $this->createContactForm($person);
+        $address = new Address();
+        
+        $addressForm = $this->createAddressForm($address, $id);
+        $personForm = $this->createContactForm($person);
+        
         return array(
-            'form' => $form->createView());
+            'person_form' => $personForm->createView(),
+            'address_form' => $addressForm->createView());
     }
 
     /**
@@ -151,14 +154,16 @@ class ContactController extends Controller {
      * @Route("/{id}/addAddress", name="add_address")
      * @Method({"POST"})
      */
-    public function addAddressAction($id) {
+    public function addAddressAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
+        $address = new Address();
         
-        $form = $this->createAddressForm($address);
+        $form = $this->createAddressForm($address, $id);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $address = $form->getData();
+            $address->setPerson($person);
             $em = $this->getDoctrine()->getManager();
             $em->persist($address);
             $em->flush();
