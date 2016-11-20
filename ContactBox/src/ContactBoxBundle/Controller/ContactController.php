@@ -41,6 +41,17 @@ class ContactController extends Controller {
                 ->getForm();
         return $form;
     }
+    
+    public function createEmailForm($email, $id) {
+        $form = $this->createFormBuilder($email)
+                ->setAction($this->generateUrl("add_email", array("id" => $id)))
+                ->setMethod("POST")
+                ->add('email')
+                ->add('email_type')
+                ->add('save', SubmitType::class)
+                ->getForm();
+        return $form;
+    }
 
     /**
      * @Route("/new", name="new_get")
@@ -81,13 +92,16 @@ class ContactController extends Controller {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         $address = new Address();
+        $email = new Email();
         
-        $addressForm = $this->createAddressForm($address, $id);
         $personForm = $this->createContactForm($person);
+        $addressForm = $this->createAddressForm($address, $id);
+        $emailForm = $this->createEmailForm($email, $id);
         
         return array(
             'person_form' => $personForm->createView(),
-            'address_form' => $addressForm->createView());
+            'address_form' => $addressForm->createView(),
+            'email_form' => $emailForm->createView());
     }
 
     /**
@@ -168,6 +182,27 @@ class ContactController extends Controller {
             $em->persist($address);
             $em->flush();
             return new Response("Dodano adres");
+        }
+    }
+    
+    /**
+     * @Route ("/{id}/addEmail", name="add_email")
+     * @Method({"POST"})
+     */
+    public function addEmailAction(Request $request, $id) {
+        $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
+        $person = $repository->find($id);
+        $email = new Email();
+        
+        $form = $this->createEmailForm($email, $id);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $email = $form->getData();
+            $email->setPerson($person);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($email);
+            $em->flush();
+            return new Response("Dodano adres e-mail");
         }
     }
 
