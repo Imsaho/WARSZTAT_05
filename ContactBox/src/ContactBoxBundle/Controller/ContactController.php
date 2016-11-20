@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ContactController extends Controller {
 
@@ -30,7 +31,8 @@ class ContactController extends Controller {
 
     public function createAddressForm($address, $id) {
         $form = $this->createFormBuilder($address)
-                ->setAction($this->generateUrl("add_address", array('id' => $id)))
+                ->setAction($this->generateUrl("add_address", array(
+                            'id' => $id)))
                 ->setMethod("POST")
                 ->add('city')
                 ->add('street')
@@ -41,10 +43,11 @@ class ContactController extends Controller {
                 ->getForm();
         return $form;
     }
-    
+
     public function createEmailForm($email, $id) {
         $form = $this->createFormBuilder($email)
-                ->setAction($this->generateUrl("add_email", array("id" => $id)))
+                ->setAction($this->generateUrl("add_email", array(
+                            "id" => $id)))
                 ->setMethod("POST")
                 ->add('email')
                 ->add('email_type')
@@ -52,13 +55,29 @@ class ContactController extends Controller {
                 ->getForm();
         return $form;
     }
-    
+
     public function createPhoneForm($phone, $id) {
         $form = $this->createFormBuilder($phone)
-                ->setAction($this->generateUrl("add_phone", array('id' => $id)))
+                ->setAction($this->generateUrl("add_phone", array(
+                            'id' => $id)))
                 ->setMethod("POST")
                 ->add('phone_number')
                 ->add('phone_type')
+                ->add('save', SubmitType::class)
+                ->getForm();
+        return $form;
+    }
+
+    public function createGroupForm($group, $id, $options) {
+        $form = $this->createFormBuilder($group)
+                ->setAction($this->generateUrl("add_group", array(
+                            'id' => $id)))
+                ->setMethod("POST")
+                ->add('group_name', ChoiceType::class, array(
+                    'choices' => $options,
+                    'choices_as_values' => true,
+                    'choice_label' => 'getGroupName',
+                    'choice_value' => 'getGroupName'))
                 ->add('save', SubmitType::class)
                 ->getForm();
         return $form;
@@ -101,21 +120,26 @@ class ContactController extends Controller {
      */
     public function formEditContactAction($id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
+        $allGroups = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findAll();
+
         $person = $repository->find($id);
         $address = new Address();
         $email = new Email();
         $phone = new Phone();
-        
+        $group = new PersonGroup();
+
         $personForm = $this->createContactForm($person);
         $addressForm = $this->createAddressForm($address, $id);
         $emailForm = $this->createEmailForm($email, $id);
         $phoneForm = $this->createPhoneForm($phone, $id);
-        
+        $groupForm = $this->createGroupForm($group, $id, $allGroups);
+
         return array(
             'person_form' => $personForm->createView(),
             'address_form' => $addressForm->createView(),
             'email_form' => $emailForm->createView(),
-            'phone_form' => $phoneForm->createView() );
+            'phone_form' => $phoneForm->createView(),
+            'group_form' => $groupForm->createView());
     }
 
     /**
@@ -186,7 +210,7 @@ class ContactController extends Controller {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         $address = new Address();
-        
+
         $form = $this->createAddressForm($address, $id);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -198,7 +222,7 @@ class ContactController extends Controller {
             return new Response("Dodano adres");
         }
     }
-    
+
     /**
      * @Route ("/{id}/addEmail", name="add_email")
      * @Method({"POST"})
@@ -207,7 +231,7 @@ class ContactController extends Controller {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         $email = new Email();
-        
+
         $form = $this->createEmailForm($email, $id);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -219,7 +243,7 @@ class ContactController extends Controller {
             return new Response("Dodano adres e-mail");
         }
     }
-    
+
     /**
      * @Route ("/{id}/addPhone", name="add_phone")
      * @Method({"POST"})
@@ -228,7 +252,7 @@ class ContactController extends Controller {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         $phone = new Phone();
-        
+
         $form = $this->createPhoneForm($phone, $id);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -241,4 +265,43 @@ class ContactController extends Controller {
         }
     }
 
+    /**
+     * @Route ("/{id}/addGroup", name="add_group")
+     * @Method({"POST"})
+     */
+    public function addGroupAction(Request $request, $id) {
+        $person = $this->getDoctrine()->getRepository("ContactBoxBundle:Person")->find($id);
+        $allGroups = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findAll();
+       
+        $groupName = $request->request->get('form')['group_name'];
+        $group = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findByGroupName($groupName);
+        
+        //dump($allGroups); die();
+        
+        $group = new PersonGroup();
+
+        $form = $this->createGroupForm($group, $id, $allGroups);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            //$group = new PersonGroup();
+            $group = $form->getData();
+            //dump($group); die();
+            
+            $person->addGroup($group);
+            $group->addPerson($person);
+            
+//            dump($group); die();
+//            dump($person); die();
+            
+            $em = $this->getDoctrine()->getManager();
+            //$em->persist($person);
+            $em->flush();
+            return new Response("Użytkownika dodano do grupy");
+        }
+    }
+
 }
+
+/*
+ * A new entity was found through the relationship 'ContactBoxBundle\Entity\Person#groups' that was not configured to cascade persist operations for entity: ContactBoxBundle\Entity\PersonGroup@000000000bcb555e0000000035ee81a6. To solve this issue: Either explicitly call EntityManager#persist() on this unknown entity or configure cascade persist this association in the mapping for example @ManyToOne(..,cascade={"persist"}). If you cannot find out which entity causes the problem implement 'ContactBoxBundle\Entity\PersonGroup#__toString()' to get a clue.
+ */

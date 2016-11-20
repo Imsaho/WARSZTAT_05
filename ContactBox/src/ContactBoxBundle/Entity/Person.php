@@ -51,7 +51,7 @@ class Person
     private $address;
     
     /**
-     * @ORM\ManyToMany (targetEntity="PersonGroup", inversedBy="persons")
+     * @ORM\ManyToMany (targetEntity="PersonGroup", inversedBy="persons", cascade={"persist"})
      * @ORM\JoinTable(name="persons_groups")
      */
     private $groups;

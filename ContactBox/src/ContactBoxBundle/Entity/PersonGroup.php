@@ -105,4 +105,8 @@ class PersonGroup
     {
         return $this->persons;
     }
+    
+    public function __toString() {
+        return "$this->groupName";
+    }
 }
