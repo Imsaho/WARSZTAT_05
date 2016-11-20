@@ -52,6 +52,17 @@ class ContactController extends Controller {
                 ->getForm();
         return $form;
     }
+    
+    public function createPhoneForm($phone, $id) {
+        $form = $this->createFormBuilder($phone)
+                ->setAction($this->generateUrl("add_phone", array('id' => $id)))
+                ->setMethod("POST")
+                ->add('phone_number')
+                ->add('phone_type')
+                ->add('save', SubmitType::class)
+                ->getForm();
+        return $form;
+    }
 
     /**
      * @Route("/new", name="new_get")
@@ -93,15 +104,18 @@ class ContactController extends Controller {
         $person = $repository->find($id);
         $address = new Address();
         $email = new Email();
+        $phone = new Phone();
         
         $personForm = $this->createContactForm($person);
         $addressForm = $this->createAddressForm($address, $id);
         $emailForm = $this->createEmailForm($email, $id);
+        $phoneForm = $this->createPhoneForm($phone, $id);
         
         return array(
             'person_form' => $personForm->createView(),
             'address_form' => $addressForm->createView(),
-            'email_form' => $emailForm->createView());
+            'email_form' => $emailForm->createView(),
+            'phone_form' => $phoneForm->createView() );
     }
 
     /**
@@ -203,6 +217,27 @@ class ContactController extends Controller {
             $em->persist($email);
             $em->flush();
             return new Response("Dodano adres e-mail");
+        }
+    }
+    
+    /**
+     * @Route ("/{id}/addPhone", name="add_phone")
+     * @Method({"POST"})
+     */
+    public function addPhoneAction(Request $request, $id) {
+        $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
+        $person = $repository->find($id);
+        $phone = new Phone();
+        
+        $form = $this->createPhoneForm($phone, $id);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $phone = $form->getData();
+            $phone->setPerson($person);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($phone);
+            $em->flush();
+            return new Response("Dodano numer telefonu");
         }
     }
 

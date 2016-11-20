@@ -24,9 +24,9 @@ class Phone
     
     /**
      *
-     * @var int
+     * @var string
      * 
-     * @ORM\Column(name="phone_number", type="integer", length=25)
+     * @ORM\Column(name="phone_number", type="string", length=25)
      */
     private $phoneNumber;
     
