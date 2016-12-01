@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use ContactBoxBundle\Repository\PersonRepository;
 
 class ContactController extends Controller {
@@ -96,8 +97,12 @@ class ContactController extends Controller {
     public function createSearchForm() {
         $form = $this->createFormBuilder()
                 ->setMethod("POST")
-                ->add('last_name')
-                ->add('save', SubmitType::class)
+                ->add('last_name', TextType::class, array(
+                    'label' => 'first or last name is like...'
+                ))
+                ->add('save', SubmitType::class, array(
+                    'label' => 'Wyszukaj',
+                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg') ))
                 ->getForm();
         return $form;
     }
