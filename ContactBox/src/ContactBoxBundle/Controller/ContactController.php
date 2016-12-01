@@ -84,7 +84,7 @@ class ContactController extends Controller {
                 ->getForm();
         return $form;
     }
-    
+
     public function createSearchForm() {
         $form = $this->createFormBuilder()
                 ->setMethod("POST")
@@ -221,24 +221,24 @@ class ContactController extends Controller {
      * @Template()
      */
     public function showAllContactsAction() {
-        
+
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
-        $contacts = $repository->findBy( [], ['lastName' => 'ASC'] );
+        $contacts = $repository->findBy([], ['lastName' => 'ASC']);
         $searchForm = $this->createSearchForm();
         return array(
             'contacts' => $contacts,
             'search_form' => $searchForm->createView());
     }
-    
+
     /**
      * @Route ("/", name="show_by_name")
      * @Template()
      * @Method({"POST"})
      */
     public function showContactsByNameAction(Request $request, $lastName) {
-        
+
         $lastName = $request->request->get('form')['last_name'];
-        
+
         $em = $this->getDoctrine()->getManager();
         $contacts = $em->getRepository("ContactBoxBundle:Person")->findByLastName($lastName);
         return ['contacts' => $contacts];
@@ -318,25 +318,17 @@ class ContactController extends Controller {
         $groupName = $request->request->get('form')['group_name'];
         $group = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findByGroupName($groupName);
 
-        //dump($allGroups); die();
-
         $group = new PersonGroup();
 
         $form = $this->createGroupForm($group, $id, $allGroups);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            //$group = new PersonGroup();
             $group = $form->getData();
-            //dump($group); die();
 
             $person->addGroup($group);
             $group->addPerson($person);
 
-//            dump($group); die();
-//            dump($person); die();
-
             $em = $this->getDoctrine()->getManager();
-            //$em->persist($person);
             $em->flush();
             return new Response("Użytkownika dodano do grupy");
         }

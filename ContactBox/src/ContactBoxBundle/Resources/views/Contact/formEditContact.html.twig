@@ -2,27 +2,30 @@
 
 {% block title %}ContactBoxBundle:Contact:editContact{% endblock %}
 
+{% block page_title %}
+    <h1>Edytuj kontakt</h1>
+{% endblock %}
+
 {% block body %}
-<h1>Welcome to the Contact:editContact page</h1>
 
-{{ form_start(person_form) }}
-{{ form_widget(person_form) }}
-{{ form_end(person_form) }}
+    {{ form_start(person_form) }}
+    {{ form_widget(person_form) }}
+    {{ form_end(person_form) }}
 
-{{ form_start(address_form) }}
-{{ form_widget(address_form) }}
-{{ form_end(address_form) }}
+    {{ form_start(address_form) }}
+    {{ form_widget(address_form) }}
+    {{ form_end(address_form) }}
 
-{{ form_start(email_form) }}
-{{ form_widget(email_form) }}
-{{ form_end(email_form) }}
+    {{ form_start(email_form) }}
+    {{ form_widget(email_form) }}
+    {{ form_end(email_form) }}
 
-{{ form_start(phone_form) }}
-{{ form_widget(phone_form) }}
-{{ form_end(phone_form) }}
+    {{ form_start(phone_form) }}
+    {{ form_widget(phone_form) }}
+    {{ form_end(phone_form) }}
 
-{{ form_start(group_form) }}
-{{ form_widget(group_form) }}
-{{ form_end(group_form) }}
+    {{ form_start(group_form) }}
+    {{ form_widget(group_form) }}
+    {{ form_end(group_form) }}
 
 {% endblock %}
