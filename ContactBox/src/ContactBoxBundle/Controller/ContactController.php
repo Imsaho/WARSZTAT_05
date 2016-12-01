@@ -243,12 +243,12 @@ class ContactController extends Controller {
      * @Template()
      * @Method({"POST"})
      */
-    public function showContactsByNameAction(Request $request, $lastName) {
+    public function showContactsByNameAction(Request $request, $string) {
 
-        $lastName = $request->request->get('form')['last_name'];
+        $string = $request->request->get('form')['last_name'];
 
         $em = $this->getDoctrine()->getManager();
-        $contacts = $em->getRepository("ContactBoxBundle:Person")->findByLastName($lastName);
+        $contacts = $em->getRepository("ContactBoxBundle:Person")->findByLastName($string);
         return ['contacts' => $contacts];
     }
 

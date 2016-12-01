@@ -12,12 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class PersonRepository extends EntityRepository
 {
-    public function findByLastName($lastName) {
-        $dql = "SELECT person FROM ContactBoxBundle:Person person
-                                    WHERE person.lastName LIKE :lastName ORDER BY person.lastName ASC";
-        $query = $this->getEntityManager()->createQuery($dql)
-                ->setParameter('lastName', ('%'.$lastName.'%'));
-        $contacts = $query->getResult();
-        return $contacts;
+    public function findByLastName($string) {
+        
+        $qb = $this->createQueryBuilder('p');
+        
+        return $qb->where($qb->expr()
+                ->orX(
+                        $qb->expr()->like('p.firstName', ':string'),
+                        $qb->expr()->like('p.lastName', ':string')
+                        )
+                )
+                ->setParameter('string', ('%'.$string.'%'))
+                ->orderBy('p.lastName', 'ASC')
+                ->getQuery()
+                ->getResult();
     }
 }
