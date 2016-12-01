@@ -26,7 +26,9 @@ class ContactController extends Controller {
                 ->add('last_name')
                 ->add('description')
                 ->add('groups')
-                ->add('save', SubmitType::class)
+                ->add('save', SubmitType::class, array(
+                    'label' => 'Zatwierdź',
+                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
                 ->getForm();
         return $form;
     }
@@ -41,7 +43,9 @@ class ContactController extends Controller {
                 ->add('house_number')
                 ->add('apartment_number')
                 ->add('address_type')
-                ->add('save', SubmitType::class)
+                ->add('save', SubmitType::class, array(
+                    'label' => 'Dodaj adres',
+                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
                 ->getForm();
         return $form;
     }
@@ -53,7 +57,9 @@ class ContactController extends Controller {
                 ->setMethod("POST")
                 ->add('email')
                 ->add('email_type')
-                ->add('save', SubmitType::class)
+                ->add('save', SubmitType::class, array(
+                    'label' => 'Dodaj adres e-mail',
+                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
                 ->getForm();
         return $form;
     }
@@ -65,7 +71,9 @@ class ContactController extends Controller {
                 ->setMethod("POST")
                 ->add('phone_number')
                 ->add('phone_type')
-                ->add('save', SubmitType::class)
+                ->add('save', SubmitType::class, array(
+                    'label' => 'Dodaj numer telefonu',
+                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
                 ->getForm();
         return $form;
     }

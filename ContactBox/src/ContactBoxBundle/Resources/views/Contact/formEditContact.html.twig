@@ -1,31 +1,39 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}ContactBoxBundle:Contact:editContact{% endblock %}
+{% block title %}editContact{% endblock %}
 
 {% block page_title %}
     <h1>Edytuj kontakt</h1>
 {% endblock %}
 
-{% block body %}
 
+{% block form_person %}
     {{ form_start(person_form) }}
     {{ form_widget(person_form) }}
     {{ form_end(person_form) }}
+{% endblock %}
 
+{% block form_address %}
     {{ form_start(address_form) }}
     {{ form_widget(address_form) }}
     {{ form_end(address_form) }}
+{% endblock %}
 
+{% block form_email %}
     {{ form_start(email_form) }}
     {{ form_widget(email_form) }}
     {{ form_end(email_form) }}
+{% endblock %}
 
+{% block form_phone %}
     {{ form_start(phone_form) }}
     {{ form_widget(phone_form) }}
     {{ form_end(phone_form) }}
-
-    {{ form_start(group_form) }}
-    {{ form_widget(group_form) }}
-    {{ form_end(group_form) }}
-
 {% endblock %}
+
+
+{#    {{ form_start(group_form) }}
+    {{ form_widget(group_form) }}
+    {{ form_end(group_form) }}#}
+
+
