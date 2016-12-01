@@ -25,6 +25,7 @@ class ContactController extends Controller {
                 ->add('first_name')
                 ->add('last_name')
                 ->add('description')
+                ->add('groups')
                 ->add('save', SubmitType::class)
                 ->getForm();
         return $form;
@@ -342,6 +343,3 @@ class ContactController extends Controller {
     }
 
 }
-/*
- * A new entity was found through the relationship 'ContactBoxBundle\Entity\Person#groups' that was not configured to cascade persist operations for entity: ContactBoxBundle\Entity\PersonGroup@000000000bcb555e0000000035ee81a6. To solve this issue: Either explicitly call EntityManager#persist() on this unknown entity or configure cascade persist this association in the mapping for example @ManyToOne(..,cascade={"persist"}). If you cannot find out which entity causes the problem implement 'ContactBoxBundle\Entity\PersonGroup#__toString()' to get a clue.
- */
