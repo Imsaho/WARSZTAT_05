@@ -15,11 +15,12 @@ class AddressFormType extends AbstractType {
                 ->add('apartment_number')
                 ->add('address_type');
     }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    
+    public function configureOptions(\Symfony\Component\OptionsResolver\OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' =>  'ContactBoxBundle\Entity\Address'
         ));
     }
+
 
 }

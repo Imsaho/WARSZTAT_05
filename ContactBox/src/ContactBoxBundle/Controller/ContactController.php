@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use ContactBoxBundle\Repository\PersonRepository;
 use ContactBoxBundle\Form\PersonFormType;
+use ContactBoxBundle\Form\AddressFormType;
+use ContactBoxBundle\Form\EmailFormType;
+use ContactBoxBundle\Form\PhoneFormType;
 
 class ContactController extends Controller {
 
@@ -104,7 +107,7 @@ class ContactController extends Controller {
      */
     public function formNewContactAction(Request $request) {
         $person = new Person();
-        $form = $this->createForm(new PersonFormType, $person);
+        $form = $this->createForm(PersonFormType::class, $person);
 
         $form->handleRequest($request);
 
@@ -126,32 +129,28 @@ class ContactController extends Controller {
     }
 
     /**
-     * @Route("/{id}/edit", name="edit_get")
-     * @Method({"GET"})
+     * @Route("/{id}/edit", name="edit")
      * @Template()
      */
     public function formEditContactAction($id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
-        $allGroups = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findAll();
 
         $person = $repository->find($id);
         $address = new Address();
         $email = new Email();
         $phone = new Phone();
-        $group = new PersonGroup();
 
-        $personForm = $this->createForm(new PersonFormType, $person);
-        $addressForm = $this->createAddressForm($address, $id);
-        $emailForm = $this->createEmailForm($email, $id);
-        $phoneForm = $this->createPhoneForm($phone, $id);
-        $groupForm = $this->createGroupForm($group, $id, $allGroups);
+        $personForm = $this->createForm(PersonFormType::class, $person);
+        $addressForm = $this->createForm(AddressFormType::class, $address);
+        $emailForm = $this->createForm(EmailFormType::class, $email);
+        $phoneForm = $this->createForm(PhoneFormType::class, $phone);
 
         return array(
             'person_form' => $personForm->createView(),
             'address_form' => $addressForm->createView(),
             'email_form' => $emailForm->createView(),
             'phone_form' => $phoneForm->createView(),
-            'group_form' => $groupForm->createView());
+            'id' => $id);
     }
 
     /**

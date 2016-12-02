@@ -12,11 +12,12 @@ class PhoneFormType extends AbstractType {
         $builder->add('phone_number')
                 ->add('phone_type');
     }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    
+    public function configureOptions(\Symfony\Component\OptionsResolver\OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'ContactBoxBundle\Entity\Email'
+            'data_class' => 'ContactBoxBundle\Entity\Phone'
         ));
     }
+
 
 }

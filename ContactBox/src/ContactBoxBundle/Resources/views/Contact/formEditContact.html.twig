@@ -6,60 +6,109 @@
     <h1>Edytuj kontakt</h1>
 {% endblock %}
 
-<form action="{{ path('edit') }}" method="POST">
+{% block body %}
+    <div class="row">
+        <div class="col-lg-2">
+        </div>
 
-    {% block form_person %}
+        <form action="{{ path('edit', {'id': id}) }}" method="POST">
 
-        {{ form_errors(person_form) }}
+            <div class="col-lg-3">
+                <h2>Podstawowe dane</h2>
+                {% block form_person %}
 
-        {{ form_row(person_form.first_name) }}
-        {{ form_row(person_form.last_name) }}
-        {{ form_row(person_form.description) }}
-        {{ form_row(person_form.groups) }}
+                    {{ form_errors(person_form) }}
 
-        {{ form_rest(person_form) }}
+                    {{ form_row(person_form.first_name) }}
+                    {{ form_row(person_form.last_name) }}
+                    {{ form_row(person_form.description) }}
+                    {{ form_row(person_form.groups) }}
 
-    {% endblock %}
+                    {{ form_rest(person_form) }}
 
-    {% block form_address %}
+                {% endblock %}
+                <hr>
+            </div>
 
-        {{ form_errors(address_form) }}
+            <div class="col-lg-1">
+            </div>
 
-        {{ form_row(address_form.city) }}
-        {{ form_row(address_form.street) }}
-        {{ form_row(address_form.house_number) }}
-        {{ form_row(address_form.apartment_number) }}
-        {{ form_row(address_form.address_type) }}
+            <div class="col-lg-3">
+                <h2>Dane adresowe</h2>
+                {% block form_address %}
 
-        {{ form_rest(address_form) }}
+                    {{ form_errors(address_form) }}
 
-    {% endblock %}
+                    {{ form_row(address_form.city) }}
+                    {{ form_row(address_form.street) }}
+                    {{ form_row(address_form.house_number) }}
+                    {{ form_row(address_form.apartment_number) }}
+                    {{ form_row(address_form.address_type) }}
 
-    {% block form_email %}
+                    {{ form_rest(address_form) }}
 
-        {{ form_errors(email_form) }}
+                {% endblock %}
+                <hr>
+            </div>
 
-        {{ form_row(email_form.email) }}
-        {{ form_row(email_form.email_type) }}
+            <div class="col-lg-2">
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+        </div>
 
-        {{ form_rest(email_form) }}
+        <div class="col-lg-3">
+            <h2>Adres e-mail</h2>
+            {% block form_email %}
 
-    {% endblock %}
+                {{ form_errors(email_form) }}
 
-    {% block form_phone %}
+                {{ form_row(email_form.email) }}
+                {{ form_row(email_form.email_type) }}
+
+                {{ form_rest(email_form) }}
+
+            {% endblock %}
+        </div>
+
+        <div class="col-lg-1">
+        </div>
+
+        <div class="col-lg-3">
+            <h2>Numer telefonu</h2>
+            {% block form_phone %}
+
+                {{ form_errors(phone_form) }}
+
+                {{ form_row(phone_form.phone_number) }}
+                {{ form_row(phone_form.phone_type) }}
+
+                {{ form_rest(phone_form) }}
+
+            {% endblock %}
+        </div>
+
+        <div class="col-lg-2">
+        </div>
+    </div>
         
-        {{ form_errors(phone_form) }}
-        
-        {{ form_row(phone_form.phone_number) }}
-        {{ form_row(phone_form.phone_type) }}
-
-        {{ form_rest(phone_form) }}
-        
-    {% endblock %}
-
     <input type="submit" value="Zatwierdź zmiany" class="btn btn-outline btn-success btn-lg btn-block" />
 
 </form>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 {#    {{ form_start(group_form) }}
