@@ -183,4 +183,8 @@ class InfoType
     {
         return $this->phones;
     }
+    
+    public function __toString() {
+        return (string) $this->name;
+    }
 }
