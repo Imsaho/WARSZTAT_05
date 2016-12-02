@@ -17,20 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use ContactBoxBundle\Repository\PersonRepository;
+use ContactBoxBundle\Form\PersonFormType;
 
 class ContactController extends Controller {
 
     public function createContactForm($person) {
-        $form = $this->createFormBuilder($person)
-                ->setMethod("POST")
-                ->add('first_name')
-                ->add('last_name')
-                ->add('description')
-                ->add('groups')
-                ->add('save', SubmitType::class, array(
-                    'label' => 'Zatwierdź',
-                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
-                ->getForm();
+        $form = $this->createForm(new PersonFormType, $person);
         return $form;
     }
 
@@ -46,7 +38,8 @@ class ContactController extends Controller {
                 ->add('address_type')
                 ->add('save', SubmitType::class, array(
                     'label' => 'Dodaj adres',
-                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
+                    'attr' => array(
+                        'class' => 'btn btn-outline btn-success btn-lg btn-block')))
                 ->getForm();
         return $form;
     }
@@ -60,7 +53,8 @@ class ContactController extends Controller {
                 ->add('email_type')
                 ->add('save', SubmitType::class, array(
                     'label' => 'Dodaj adres e-mail',
-                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
+                    'attr' => array(
+                        'class' => 'btn btn-outline btn-success btn-lg btn-block')))
                 ->getForm();
         return $form;
     }
@@ -74,7 +68,8 @@ class ContactController extends Controller {
                 ->add('phone_type')
                 ->add('save', SubmitType::class, array(
                     'label' => 'Dodaj numer telefonu',
-                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg btn-block') ))
+                    'attr' => array(
+                        'class' => 'btn btn-outline btn-success btn-lg btn-block')))
                 ->getForm();
         return $form;
     }
@@ -102,35 +97,23 @@ class ContactController extends Controller {
                 ))
                 ->add('save', SubmitType::class, array(
                     'label' => 'Wyszukaj',
-                    'attr' => array('class' => 'btn btn-outline btn-success btn-lg') ))
+                    'attr' => array(
+                        'class' => 'btn btn-outline btn-success btn-lg')))
                 ->getForm();
         return $form;
     }
 
     /**
-     * @Route("/new", name="new_get")
-     * @Method("get")
+     * @Route("/new", name="new")
      * @Template()
      */
-    public function formNewContactAction() {
-        $person = new Person();
-        $contactForm = $this->createContactForm($person);
-        return array(
-            'contact_form' => $contactForm->createView());
-    }
-
-    /**
-     * @Route("/new", name="new_post")
-     * @Method({"POST"})
-     * @Template("ContactBoxBundle:Contact:message.html.twig")
-
-     */
-    public function newContactAction(Request $request) {
+    public function formNewContactAction(Request $request) {
         $person = new Person();
         $form = $this->createContactForm($person);
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $person = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $em->persist($person);
@@ -142,7 +125,29 @@ class ContactController extends Controller {
             $response = $this->redirect($url);
             return $response;
         }
+
+        return array(
+            'person_form' => $form->createView());
     }
+
+//    public function newContactAction(Request $request) {
+//        $person = new Person();
+//        $form = $this->createContactForm($person);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted()) {
+//            $person = $form->getData();
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($person);
+//            $em->flush();
+//
+//            $id = $person->getId();
+//            $url = $this->generateUrl("show_by_id", array(
+//                'id' => $id));
+//            $response = $this->redirect($url);
+//            return $response;
+//        }
+//    }
 
     /**
      * @Route("/{id}/edit", name="edit_get")
