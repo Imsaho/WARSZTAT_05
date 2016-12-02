@@ -1,3 +1,4 @@
+{#{% extends "::base.html.twig" %}#}
 
 <a href="{{ path('show_by_id', {'id':contact.id}) }}">więcej | </a>
 <a href="{{ path('edit', {'id':contact.id}) }}">edytuj | </a>
@@ -28,7 +29,9 @@
     </div>
     <div class="col-lg-4">
         <div class="panel panel-default">
-            <div class="panel-heading"><h4>adres</h4></div>            
+            <div class="panel-heading"><h4>adres</h4>
+                <p><a data-toggle="modal" href="{{ path('add_address', {'id': contact.id}) }}" data-target="#addressModal">dodaj nowy</a></p>
+            </div>            
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="table">
@@ -79,3 +82,4 @@
 
     </div>
 </div>
+

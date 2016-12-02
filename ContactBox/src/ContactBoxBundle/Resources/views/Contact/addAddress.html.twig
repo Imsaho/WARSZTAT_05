@@ -1,0 +1,12 @@
+{% block body %}
+    <h1>add address</h1>
+
+    {{ form_start(address_form) }}
+    {{ form_widget(address_form) }}
+    {{ form_end(address_form) }}
+
+{% endblock %}
+
+{#<div id="addressModal" class="modal hide fade">
+    {{ include('ContactBoxBundle:Contact:addAddress.html.twig') }}
+</div>#}

@@ -24,54 +24,6 @@ use ContactBoxBundle\Form\PhoneFormType;
 
 class ContactController extends Controller {
 
-    public function createAddressForm($address, $id) {
-        $form = $this->createFormBuilder($address)
-                ->setAction($this->generateUrl("add_address", array(
-                            'id' => $id)))
-                ->setMethod("POST")
-                ->add('city')
-                ->add('street')
-                ->add('house_number')
-                ->add('apartment_number')
-                ->add('address_type')
-                ->add('save', SubmitType::class, array(
-                    'label' => 'Dodaj adres',
-                    'attr' => array(
-                        'class' => 'btn btn-outline btn-success btn-lg btn-block')))
-                ->getForm();
-        return $form;
-    }
-
-    public function createEmailForm($email, $id) {
-        $form = $this->createFormBuilder($email)
-                ->setAction($this->generateUrl("add_email", array(
-                            "id" => $id)))
-                ->setMethod("POST")
-                ->add('email')
-                ->add('email_type')
-                ->add('save', SubmitType::class, array(
-                    'label' => 'Dodaj adres e-mail',
-                    'attr' => array(
-                        'class' => 'btn btn-outline btn-success btn-lg btn-block')))
-                ->getForm();
-        return $form;
-    }
-
-    public function createPhoneForm($phone, $id) {
-        $form = $this->createFormBuilder($phone)
-                ->setAction($this->generateUrl("add_phone", array(
-                            'id' => $id)))
-                ->setMethod("POST")
-                ->add('phone_number')
-                ->add('phone_type')
-                ->add('save', SubmitType::class, array(
-                    'label' => 'Dodaj numer telefonu',
-                    'attr' => array(
-                        'class' => 'btn btn-outline btn-success btn-lg btn-block')))
-                ->getForm();
-        return $form;
-    }
-
     public function createGroupForm($group, $id, $options) {
         $form = $this->createFormBuilder($group)
                 ->setAction($this->generateUrl("add_group", array(
@@ -238,16 +190,17 @@ class ContactController extends Controller {
 
     /**
      * @Route("/{id}/addAddress", name="add_address")
-     * @Method({"POST"})
+     * @Template()
      */
     public function addAddressAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         $address = new Address();
 
-        $form = $this->createAddressForm($address, $id);
+        $form = $this->createForm(AddressFormType::class, $address);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $address = $form->getData();
             $address->setPerson($person);
             $em = $this->getDoctrine()->getManager();
@@ -255,20 +208,23 @@ class ContactController extends Controller {
             $em->flush();
             return new Response("Dodano adres");
         }
+        return array(
+            'address_form' => $form->createView()
+        );
     }
 
     /**
      * @Route ("/{id}/addEmail", name="add_email")
-     * @Method({"POST"})
+     * @Template()
      */
     public function addEmailAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         $email = new Email();
 
-        $form = $this->createEmailForm($email, $id);
+        $form = $this->createForm(EmailFormType::class, $email);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData();
             $email->setPerson($person);
             $em = $this->getDoctrine()->getManager();
@@ -276,20 +232,23 @@ class ContactController extends Controller {
             $em->flush();
             return new Response("Dodano adres e-mail");
         }
+        return array(
+            'email_form' => $form->createView()
+        );
     }
 
     /**
      * @Route ("/{id}/addPhone", name="add_phone")
-     * @Method({"POST"})
+     * @Template()
      */
     public function addPhoneAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
         $phone = new Phone();
 
-        $form = $this->createPhoneForm($phone, $id);
+        $form = $this->createForm(PhoneFormType::class, $phone);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $phone = $form->getData();
             $phone->setPerson($person);
             $em = $this->getDoctrine()->getManager();
@@ -297,6 +256,9 @@ class ContactController extends Controller {
             $em->flush();
             return new Response("Dodano numer telefonu");
         }
+        return array(
+            'phone_form' => $form->createView()
+        );
     }
 
     /**
