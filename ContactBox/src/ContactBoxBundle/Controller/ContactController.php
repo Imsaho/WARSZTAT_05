@@ -21,11 +21,6 @@ use ContactBoxBundle\Form\PersonFormType;
 
 class ContactController extends Controller {
 
-    public function createContactForm($person) {
-        $form = $this->createForm(new PersonFormType, $person);
-        return $form;
-    }
-
     public function createAddressForm($address, $id) {
         $form = $this->createFormBuilder($address)
                 ->setAction($this->generateUrl("add_address", array(
@@ -109,7 +104,7 @@ class ContactController extends Controller {
      */
     public function formNewContactAction(Request $request) {
         $person = new Person();
-        $form = $this->createContactForm($person);
+        $form = $this->createForm(new PersonFormType, $person);
 
         $form->handleRequest($request);
 
@@ -130,25 +125,6 @@ class ContactController extends Controller {
             'person_form' => $form->createView());
     }
 
-//    public function newContactAction(Request $request) {
-//        $person = new Person();
-//        $form = $this->createContactForm($person);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted()) {
-//            $person = $form->getData();
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($person);
-//            $em->flush();
-//
-//            $id = $person->getId();
-//            $url = $this->generateUrl("show_by_id", array(
-//                'id' => $id));
-//            $response = $this->redirect($url);
-//            return $response;
-//        }
-//    }
-
     /**
      * @Route("/{id}/edit", name="edit_get")
      * @Method({"GET"})
@@ -164,7 +140,7 @@ class ContactController extends Controller {
         $phone = new Phone();
         $group = new PersonGroup();
 
-        $personForm = $this->createContactForm($person);
+        $personForm = $this->createForm(new PersonFormType, $person);
         $addressForm = $this->createAddressForm($address, $id);
         $emailForm = $this->createEmailForm($email, $id);
         $phoneForm = $this->createPhoneForm($phone, $id);
@@ -197,7 +173,6 @@ class ContactController extends Controller {
                 $person = $form->getData();
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
-                //return new Response("Edycja zakończona");
                 return array(
                     'message' => "Edycja zakończona!");
             }

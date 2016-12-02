@@ -6,30 +6,60 @@
     <h1>Edytuj kontakt</h1>
 {% endblock %}
 
+<form action="{{ path('edit') }}" method="POST">
 
-{% block form_person %}
-    {{ form_start(person_form) }}
-    {{ form_widget(person_form) }}
-    {{ form_end(person_form) }}
-{% endblock %}
+    {% block form_person %}
 
-{% block form_address %}
-    {{ form_start(address_form) }}
-    {{ form_widget(address_form) }}
-    {{ form_end(address_form) }}
-{% endblock %}
+        {{ form_errors(person_form) }}
 
-{% block form_email %}
-    {{ form_start(email_form) }}
-    {{ form_widget(email_form) }}
-    {{ form_end(email_form) }}
-{% endblock %}
+        {{ form_row(person_form.first_name) }}
+        {{ form_row(person_form.last_name) }}
+        {{ form_row(person_form.description) }}
+        {{ form_row(person_form.groups) }}
 
-{% block form_phone %}
-    {{ form_start(phone_form) }}
-    {{ form_widget(phone_form) }}
-    {{ form_end(phone_form) }}
-{% endblock %}
+        {{ form_rest(person_form) }}
+
+    {% endblock %}
+
+    {% block form_address %}
+
+        {{ form_errors(address_form) }}
+
+        {{ form_row(address_form.city) }}
+        {{ form_row(address_form.street) }}
+        {{ form_row(address_form.house_number) }}
+        {{ form_row(address_form.apartment_number) }}
+        {{ form_row(address_form.address_type) }}
+
+        {{ form_rest(address_form) }}
+
+    {% endblock %}
+
+    {% block form_email %}
+
+        {{ form_errors(email_form) }}
+
+        {{ form_row(email_form.email) }}
+        {{ form_row(email_form.email_type) }}
+
+        {{ form_rest(email_form) }}
+
+    {% endblock %}
+
+    {% block form_phone %}
+        
+        {{ form_errors(phone_form) }}
+        
+        {{ form_row(phone_form.phone_number) }}
+        {{ form_row(phone_form.phone_type) }}
+
+        {{ form_rest(phone_form) }}
+        
+    {% endblock %}
+
+    <input type="submit" value="Zatwierdź zmiany" class="btn btn-outline btn-success btn-lg btn-block" />
+
+</form>
 
 
 {#    {{ form_start(group_form) }}
