@@ -154,9 +154,14 @@ class ContactController extends Controller {
      */
     public function showContactAction($id) {
         $em = $this->getDoctrine()->getManager();
-        $contact = $em->getRepository("ContactBoxBundle:Person")->find($id);
+        $person = $em->getRepository("ContactBoxBundle:Person")->find($id);
+
+        
+        $address = new Address();
+        $form = $this->createForm(AddressFormType::class, $address);
         return array(
-            'contact' => $contact);
+            'contact' => $person,
+            'address_form' => $form->createView());
     }
 
     /**
