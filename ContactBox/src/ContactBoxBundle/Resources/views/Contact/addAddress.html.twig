@@ -1,24 +1,18 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h3 class="modal-title">dodaj adres</h3>
-</div>
-<div class="modal-body">
-    {% block form_address %}
-        <form action="" method="POST">
-            {{ form_errors(address_form) }}
+{% extends "ContactBoxBundle:Contact:formModalWindow.html.twig" %}
 
-            {{ form_row(address_form.city) }}
-            {{ form_row(address_form.street) }}
-            {{ form_row(address_form.house_number) }}
-            {{ form_row(address_form.apartment_number) }}
-            {{ form_row(address_form.address_type) }}
+{% block form %}
+    <form action="" method="POST">
+        {{ form_errors(address_form) }}
 
-            {{ form_rest(address_form) }}
+        {{ form_row(address_form.city) }}
+        {{ form_row(address_form.street) }}
+        {{ form_row(address_form.house_number) }}
+        {{ form_row(address_form.apartment_number) }}
+        {{ form_row(address_form.address_type) }}
 
-            <input type="submit" value="Dodaj adres" class="btn btn-outline btn-success btn-lg btn-block" />
+        {{ form_rest(address_form) }}
 
-        </form>
-    {% endblock %}
-</div>
-<div class="modal-footer">
-</div>
+        <input type="submit" value="Dodaj adres" class="btn btn-outline btn-success btn-lg btn-block" />
+
+    </form>
+{% endblock %}

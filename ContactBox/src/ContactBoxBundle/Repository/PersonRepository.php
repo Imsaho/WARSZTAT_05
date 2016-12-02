@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class PersonRepository extends EntityRepository
 {
-    public function findByLastName($string) {
+    public function findByFirstOrLastName($string) {
         
         $qb = $this->createQueryBuilder('p');
         

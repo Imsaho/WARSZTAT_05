@@ -1,18 +1,19 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}ContactBoxBundle:Contact:showAllContacts{% endblock %}
+{% block page_title %}
+    <h1>ContactBox - wszystkie kontakty</h1>
+{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Contact:showAllContacts page</h1>
 
-{{ form_start(search_form) }}
-{{ form_widget(search_form) }}
-{{ form_end(search_form) }}
+    {{ form_start(search_form) }}
+    {{ form_widget(search_form) }}
+    {{ form_end(search_form) }}
 
-<br/>
+    <br/>
 
-{% for contact in contacts %}
-    {% include ('ContactBoxBundle:Contact:single_contact.html.twig') %}<br/>
-{% endfor %}
-    
+    {% for contact in contacts %}
+        {% include ('ContactBoxBundle:Contact:single_contact.html.twig') %}<br/>
+    {% endfor %}
+
 {% endblock %}
