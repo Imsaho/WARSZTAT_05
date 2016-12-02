@@ -17,6 +17,6 @@ ADRES:
         {{ phone.phoneType }}: {{ phone.phoneNumber }}<br/>
     {% endfor %}
     <a href="{{ path('show_by_id', {'id':contact.id}) }}">więcej | </a>
-    <a href="{{ path('edit_get', {'id':contact.id}) }}">edytuj | </a>
+    <a href="{{ path('edit', {'id':contact.id}) }}">edytuj | </a>
     <a href="{{ path('remove', {'id':contact.id}) }}">usuń</a>
     <hr/>

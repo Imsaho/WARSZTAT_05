@@ -32,7 +32,7 @@ class Email
     /**
      * @var string
      *
-     * @ORM\Column(name="email_type", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="InfoType", inversedBy="emails")
      */
     private $emailType;
     

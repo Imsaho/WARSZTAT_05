@@ -33,7 +33,7 @@ class Phone
     /**
      * @var int
      * 
-     * @ORM\Column(name="phone_type", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="InfoType", inversedBy="phones")
      */
     private $phoneType;
     

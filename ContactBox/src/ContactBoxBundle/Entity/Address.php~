@@ -53,7 +53,7 @@ class Address
         /**
      * @var string
      *
-     * @ORM\Column(name="address_type", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="InfoType", inversedBy="addresses")
      */
     private $addressType;
     
@@ -185,5 +185,28 @@ class Address
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Set addressType
+     *
+     * @param string $addressType
+     * @return Address
+     */
+    public function setAddressType($addressType)
+    {
+        $this->addressType = $addressType;
+
+        return $this;
+    }
+
+    /**
+     * Get addressType
+     *
+     * @return string 
+     */
+    public function getAddressType()
+    {
+        return $this->addressType;
     }
 }

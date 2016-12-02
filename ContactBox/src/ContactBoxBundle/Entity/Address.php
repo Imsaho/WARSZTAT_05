@@ -53,7 +53,7 @@ class Address
         /**
      * @var string
      *
-     * @ORM\Column(name="address_type", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="InfoType", inversedBy="addresses")
      */
     private $addressType;
     

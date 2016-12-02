@@ -24,16 +24,16 @@ class Phone
     
     /**
      *
-     * @var int
+     * @var string
      * 
-     * @ORM\Column(name="phone_number", type="integer", length=25)
+     * @ORM\Column(name="phone_number", type="string", length=25)
      */
     private $phoneNumber;
     
     /**
      * @var int
      * 
-     * @ORM\Column(name="phone_type", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="InfoType", inversedBy="phones")
      */
     private $phoneType;
     

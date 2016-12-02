@@ -1,0 +1,81 @@
+
+<a href="{{ path('show_by_id', {'id':contact.id}) }}">więcej | </a>
+<a href="{{ path('edit', {'id':contact.id}) }}">edytuj | </a>
+<a href="{{ path('remove', {'id':contact.id}) }}">usuń</a>
+<hr/>
+
+<div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-3">
+        <div class="panel panel-default">
+            <h2>{{ contact.firstName }}</h2>
+            <h2>{{ contact.lastName }}</h2>
+            <p>{{ contact.description }}</p>
+            <p>Grupy:</p>
+            <ul>
+                {% for group in contact.groups %}
+                    <li>
+                        {{ group.groupName }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-1">
+
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>adres</h4></div>            
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        {% for address in contact.address %}
+                            <tr><th>{{ address.addressType}}</th></tr>
+                            <tr>
+                                <td>
+                                    {{ address.city }}, {{ address.street }} {{address.houseNumber }}/{{address.apartmentNumber}}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>e-mail</h4></div>            
+            <div class="panel-body">
+                <table>
+                    {% for email in contact.email %}
+                        <th>{{ email.emailType }}</th>
+                        <tr>
+                            <td>
+                                {{email.email}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>telefon</h4></div>            
+            <div class="panel-body">
+                <table>
+                    {% for phone in contact.phone %}
+                        <th>{{ phone.phoneType }}</th>
+                        <tr>
+                            <td>
+                                {{ phone.phoneNumber }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
