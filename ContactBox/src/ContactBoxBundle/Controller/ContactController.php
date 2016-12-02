@@ -152,16 +152,56 @@ class ContactController extends Controller {
      * @Route("/{id}", name="show_by_id")
      * @Template()
      */
-    public function showContactAction($id) {
+    public function showContactAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
         $person = $em->getRepository("ContactBoxBundle:Person")->find($id);
 
-        
         $address = new Address();
-        $form = $this->createForm(AddressFormType::class, $address);
+        $email = new Email();
+        $phone = new Phone();
+
+        $addressForm = $this->createForm(AddressFormType::class, $address);
+        $addressForm->handleRequest($request);
+
+        $emailForm = $this->createForm(EmailFormType::class, $email);
+        $emailForm->handleRequest($request);
+
+        $phoneForm = $this->createForm(PhoneFormType::class, $phone);
+        $phoneForm->handleRequest($request);
+
+        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
+            $address = $addressForm->getData();
+            $address->setPerson($person);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($address);
+            $em->flush();
+            return new Response("Dodano adres");
+        }
+
+        if ($emailForm->isSubmitted() && $emailForm->isValid()) {
+            $email = $emailForm->getData();
+            $email->setPerson($person);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($email);
+            $em->flush();
+            return new Response("Dodano adres");
+        }
+
+        if ($phoneForm->isSubmitted() && $phoneForm->isValid()) {
+            $phone = $phoneForm->getData();
+            $phone->setPerson($person);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($phone);
+            $em->flush();
+            return new Response("Dodano adres");
+        }
+
         return array(
             'contact' => $person,
-            'address_form' => $form->createView());
+            'address_form' => $addressForm->createView(),
+            'email_form' => $emailForm->createView(),
+            'phone_form' => $phoneForm->createView()
+        );
     }
 
     /**
@@ -200,13 +240,14 @@ class ContactController extends Controller {
     public function addAddressAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
         $person = $repository->find($id);
+
         $address = new Address();
 
-        $form = $this->createForm(AddressFormType::class, $address);
-        $form->handleRequest($request);
+        $addressForm = $this->createForm(AddressFormType::class, $address);
+        $addressForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $address = $form->getData();
+        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
+            $address = $addressForm->getData();
             $address->setPerson($person);
             $em = $this->getDoctrine()->getManager();
             $em->persist($address);
@@ -214,7 +255,7 @@ class ContactController extends Controller {
             return new Response("Dodano adres");
         }
         return array(
-            'address_form' => $form->createView()
+            'address_form' => $addressForm->createView()
         );
     }
 

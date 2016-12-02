@@ -1,13 +1,24 @@
-{% extends "::base.html.twig" %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">dodaj adres e-mail</h3>
+</div>
+<div class="modal-body">
 
-{% block title %}add e-mail{% endblock %}
+    {% block form_email %}
+        <form action="" method="POST">
 
-{% block body %}
-<h1>add Email page</h1>
+            {{ form_errors(email_form) }}
 
-{{ form_start(email_form) }}
-{{ form_widget(email_form) }}
-{{ form_end(email_form) }}
+            {{ form_row(email_form.email) }}
+            {{ form_row(email_form.email_type) }}
 
+            {{ form_rest(email_form) }}
 
-{% endblock %}
+            <input type="submit" value="Dodaj adres" class="btn btn-outline btn-success btn-lg btn-block" />
+
+        </form>
+
+    {% endblock %}
+</div>
+<div class="modal-footer">
+</div>

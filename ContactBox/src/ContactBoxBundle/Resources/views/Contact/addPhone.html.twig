@@ -1,13 +1,24 @@
-{% extends "::base.html.twig" %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3 class="modal-title">dodaj telefon</h3>
+</div>
+<div class="modal-body">
 
-{% block title %}add phone{% endblock %}
+    {% block form_phone %}
+        <form action="" method="POST">
 
-{% block body %}
-<h1>add phone</h1>
+            {{ form_errors(phone_form) }}
 
-{{ form_start(phone_form) }}
-{{ form_widget(phone_form) }}
-{{ form_end(phone_form) }}
+            {{ form_row(phone_form.phone_number) }}
+            {{ form_row(phone_form.phone_type) }}
 
+            {{ form_rest(phone_form) }}
+            
+            <input type="submit" value="Dodaj telefon" class="btn btn-outline btn-success btn-lg btn-block" />
+            
+        </form>
 
-{% endblock %}
+        {% endblock %}
+</div>
+<div class="modal-footer">
+</div>
