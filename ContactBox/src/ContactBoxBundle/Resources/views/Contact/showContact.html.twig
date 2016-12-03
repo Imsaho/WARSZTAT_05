@@ -23,6 +23,7 @@
                         </li>
                     {% endfor %}
                 </ul>
+                <a data-toggle="modal" href="{{ path('edit', {'id': contact.id}) }}" data-target="#editModal">edytuj dane</a>
             </div>
         </div>
         <div class="col-lg-1">
@@ -116,6 +117,14 @@
         </div>
         <div class="col-lg-2">
 
+        </div>
+    </div>
+
+    {#modal window - edit contact #}
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
         </div>
     </div>
 

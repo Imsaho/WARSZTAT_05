@@ -83,50 +83,31 @@ class ContactController extends Controller {
      * @Route("/{id}/edit", name="edit")
      * @Template()
      */
-    public function formEditContactAction($id) {
-        $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
-
-        $person = $repository->find($id);
-        $address = new Address();
-        $email = new Email();
-        $phone = new Phone();
-
-        $personForm = $this->createForm(PersonFormType::class, $person);
-        $addressForm = $this->createForm(AddressFormType::class, $address);
-        $emailForm = $this->createForm(EmailFormType::class, $email);
-        $phoneForm = $this->createForm(PhoneFormType::class, $phone);
-
-        return array(
-            'person_form' => $personForm->createView(),
-            'address_form' => $addressForm->createView(),
-            'email_form' => $emailForm->createView(),
-            'phone_form' => $phoneForm->createView(),
-            'id' => $id);
-    }
-
-    /**
-     * @Route("/{id}/edit")
-     * @Method({"POST"})
-     * @Template("ContactBoxBundle:Contact:message.html.twig")
-     */
     public function editContactAction(Request $request, $id) {
         $repository = $this->getDoctrine()->getRepository("ContactBoxBundle:Person");
+
         $person = $repository->find($id);
 
-        $form = $this->createContactForm($person);
-        $form->handleRequest($request);
+        $personForm = $this->createForm(PersonFormType::class, $person);
+        $personForm->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($personForm->isSubmitted()) {
             if (!$person) {
                 return new Response("Brak kontaktu o podanym ID");
             } else {
-                $person = $form->getData();
+                $person = $personForm->getData();
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
-                return array(
-                    'message' => "Edycja zakończona!");
+
+                $url = $this->generateUrl("show_by_id", array(
+                    'id' => $id));
+                $response = $this->redirect($url);
+                return $response;
             }
         }
+        return array(
+            'person_form' => $personForm->createView(),
+            'id' => $id);
     }
 
     /**
@@ -183,9 +164,10 @@ class ContactController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $contacts = $em->getRepository("ContactBoxBundle:Person")->findByFirstOrLastName($string);
-        return array('contacts' => $contacts,
+        return array(
+            'contacts' => $contacts,
             'search_form' => $searchForm->createView()
-            );
+        );
     }
 
     /**
