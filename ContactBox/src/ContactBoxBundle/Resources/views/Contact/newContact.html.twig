@@ -1,1 +1,20 @@
-{# empty Twig template #}
+{% extends "ContactBoxBundle:Contact:formModalWindow.html.twig" %}
+
+{% block form %}
+
+    <form action="{{ path('new')}}" method="POST">
+
+        {{ form_errors(person_form) }}
+
+        {{ form_row(person_form.first_name) }}
+        {{ form_row(person_form.last_name) }}
+        {{ form_row(person_form.description) }}
+        {{ form_row(person_form.groups) }}
+
+        {{ form_rest(person_form) }}
+
+        <input type="submit" value="Dodaj kontakt" class="btn btn-outline btn-success btn-lg btn-block" />
+
+    </form>
+
+{% endblock %}

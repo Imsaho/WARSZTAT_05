@@ -56,7 +56,7 @@ class ContactController extends Controller {
      * @Route("/new", name="new")
      * @Template()
      */
-    public function formNewContactAction(Request $request) {
+    public function newContactAction(Request $request) {
         $person = new Person();
         $form = $this->createForm(PersonFormType::class, $person);
 
