@@ -42,7 +42,7 @@ class ContactController extends Controller {
         $form = $this->createFormBuilder()
                 ->setMethod("POST")
                 ->add('last_name', TextType::class, array(
-                    'label' => 'first or last name is like...'
+                    'label' => 'wpisz szukane imię lub nazwisko: '
                 ))
                 ->add('save', SubmitType::class, array(
                     'label' => 'Wyszukaj',

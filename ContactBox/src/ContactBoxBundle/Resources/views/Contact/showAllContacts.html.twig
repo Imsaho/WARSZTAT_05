@@ -6,14 +6,41 @@
 
 {% block body %}
 
-    {{ form_start(search_form) }}
-    {{ form_widget(search_form) }}
-    {{ form_end(search_form) }}
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            {{ form_start(search_form) }}
+            {{ form_widget(search_form) }}
+            {{ form_end(search_form) }}
+
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
 
     <br/>
 
-    {% for contact in contacts %}
-        {% include ('ContactBoxBundle:Contact:single_contact.html.twig') %}<br/>
-    {% endfor %}
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div class="table-responsive">
+                <table class="table">
+                    {% for contact in contacts %}
+                        <tr>
+                            <th>{{ contact.firstName }} {{ contact.lastName }}</th>
+                            <td>{{ contact.email[0] }}</td>
+                            <td style="text-align: right">
+                                <a href="{{ path('show_by_id', {'id': contact.id}) }}">szczegóły</a> | 
+                                <a>usuń</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+
 
 {% endblock %}

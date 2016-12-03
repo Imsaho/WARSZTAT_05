@@ -26,17 +26,26 @@
         </div>
         <div class="col-lg-4">
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>adres</h4>
-                    <p><a data-toggle="modal" href="{{ path('add_address', {'id': contact.id}) }}" data-target="#addressModal">dodaj nowy</a></p>
+                <div class="panel-heading">
+
+                    <ul style="list-style-type: none">
+                        <li style="display: inline"><h4 style="display: inline">adres</h4></li>
+                        <li style="display: inline; float:right"><a data-toggle="modal" href="{{ path('add_address', {'id': contact.id}) }}" data-target="#addressModal">+ dodaj adres</a></li>
+                    </ul>
+
                 </div>            
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="table">
                             {% for address in contact.address %}
-                                <tr><th>{{ address.addressType}}</th></tr>
                                 <tr>
+                                    <th>{{ address.addressType}}</th>
                                     <td>
                                         {{ address.city }}, {{ address.street }} {{address.houseNumber }}/{{address.apartmentNumber}}
+                                    </td>
+                                    <td style="text-align: right">
+                                        <a>edytuj</a> | 
+                                        <a>usuń</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -45,37 +54,59 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>e-mail</h4>
-                    <p><a data-toggle="modal" href="{{ path('add_email', {'id': contact.id}) }}" data-target="#emailModal">dodaj nowy</a></p>
+                <div class="panel-heading">
+
+                    <ul style="list-style-type: none">
+                        <li style="display: inline"><h4 style="display: inline">e-mail</h4></li>
+                        <li style="display: inline; float:right"><a data-toggle="modal" href="{{ path('add_email', {'id': contact.id}) }}" data-target="#emailModal">+ dodaj e-mail</a></li>
+                    </ul>
+
                 </div>            
                 <div class="panel-body">
-                    <table>
-                        {% for email in contact.email %}
-                            <th>{{ email.emailType }}</th>
-                            <tr>
-                                <td>
-                                    {{email.email}}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            {% for email in contact.email %}
+                                <tr>
+                                    <th>{{ email.emailType }}</th>
+                                    <td>
+                                        {{email.email}}
+                                    </td>
+                                    <td style="text-align: right">
+                                        <a>edytuj</a> | 
+                                        <a>usuń</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>telefon</h4>
-                    <p><a data-toggle="modal" href="{{ path('add_phone', {'id': contact.id}) }}" data-target="#phoneModal">dodaj nowy</a></p>
+                <div class="panel-heading">
+
+                    <ul style="list-style-type: none">
+                        <li style="display: inline"><h4 style="display: inline">telefon</h4></li>
+                        <li style="display: inline; float:right"><a data-toggle="modal" href="{{ path('add_phone', {'id': contact.id}) }}" data-target="#phoneModal">+ dodaj telefon</a></li>
+                    </ul>
+
                 </div>            
                 <div class="panel-body">
-                    <table>
-                        {% for phone in contact.phone %}
-                            <th>{{ phone.phoneType }}</th>
-                            <tr>
-                                <td>
-                                    {{ phone.phoneNumber }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            {% for phone in contact.phone %}
+                                <tr>
+                                    <th>{{ phone.phoneType }}</th>
+                                    <td>
+                                        {{ phone.phoneNumber }}
+                                    </td>
+                                    <td style="text-align: right">
+                                        <a>edytuj</a> | 
+                                        <a>usuń</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
