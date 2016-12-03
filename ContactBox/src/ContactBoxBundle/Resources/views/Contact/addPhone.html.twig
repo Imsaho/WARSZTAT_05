@@ -1,7 +1,7 @@
 {% extends "ContactBoxBundle:Contact:formModalWindow.html.twig" %}
 
 {% block form %}
-    <form action="" method="POST">
+    <form action="{{ path('add_phone', {'id': id}) }}" method="POST">
 
         {{ form_errors(phone_form) }}
 

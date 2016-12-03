@@ -151,48 +151,12 @@ class ContactController extends Controller {
      * @Route("/{id}", name="show_by_id")
      * @Template()
      */
-    public function showContactAction(Request $request, $id) {
+    public function showContactAction($id) {
         $em = $this->getDoctrine()->getManager();
         $person = $em->getRepository("ContactBoxBundle:Person")->find($id);
 
-        $address = new Address();
-        $email = new Email();
-        $phone = new Phone();
-
-        $addressForm = $this->createForm(AddressFormType::class, $address);
-
-
-        $emailForm = $this->createForm(EmailFormType::class, $email);
-        $emailForm->handleRequest($request);
-
-        $phoneForm = $this->createForm(PhoneFormType::class, $phone);
-        $phoneForm->handleRequest($request);
-
-
-
-        if ($emailForm->isSubmitted() && $emailForm->isValid()) {
-            $email = $emailForm->getData();
-            $email->setPerson($person);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($email);
-            $em->flush();
-            return new Response("Dodano adres");
-        }
-
-        if ($phoneForm->isSubmitted() && $phoneForm->isValid()) {
-            $phone = $phoneForm->getData();
-            $phone->setPerson($person);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($phone);
-            $em->flush();
-            return new Response("Dodano adres");
-        }
-
         return array(
-            'contact' => $person,
-            'address_form' => $addressForm->createView(),
-            'email_form' => $emailForm->createView(),
-            'phone_form' => $phoneForm->createView()
+            'contact' => $person
         );
     }
 
@@ -240,7 +204,6 @@ class ContactController extends Controller {
         if ($addressForm->isSubmitted() && $addressForm->isValid()) {
             $address = $addressForm->getData();
             $address->setPerson($person);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($address);
             $em->flush();
 
@@ -260,11 +223,29 @@ class ContactController extends Controller {
      * @Route ("/{id}/addEmail", name="add_email")
      * @Template()
      */
-    public function addEmailAction() {
+    public function addEmailAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $person = $em->getRepository("ContactBoxBundle:Person")->find($id);
+
         $email = new Email();
-        $form = $this->createForm(EmailFormType::class, $email);
+        $emailForm = $this->createForm(EmailFormType::class, $email);
+        $emailForm->handleRequest($request);
+
+        if ($emailForm->isSubmitted() && $emailForm->isValid()) {
+            $email = $emailForm->getData();
+            $email->setPerson($person);
+            $em->persist($email);
+            $em->flush();
+
+            $url = $this->generateUrl("show_by_id", array(
+                'id' => $id));
+            $response = $this->redirect($url);
+            return $response;
+        }
+
         return array(
-            'email_form' => $form->createView()
+            'id' => $id,
+            'email_form' => $emailForm->createView()
         );
     }
 
@@ -272,11 +253,30 @@ class ContactController extends Controller {
      * @Route ("/{id}/addPhone", name="add_phone")
      * @Template()
      */
-    public function addPhoneAction() {
+    public function addPhoneAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $person = $em->getRepository("ContactBoxBundle:Person")->find($id);
+
         $phone = new Phone();
-        $form = $this->createForm(PhoneFormType::class, $phone);
+        $phoneForm = $this->createForm(PhoneFormType::class, $phone);
+        $phoneForm->handleRequest($request);
+
+        if ($phoneForm->isSubmitted() && $phoneForm->isValid()) {
+            $phone = $phoneForm->getData();
+            $phone->setPerson($person);
+            $em->persist($phone);
+            $em->flush();
+
+            $url = $this->generateUrl("show_by_id", array(
+                'id' => $id));
+            $response = $this->redirect($url);
+            return $response;
+        }
+
+
         return array(
-            'phone_form' => $form->createView()
+            'id' => $id,
+            'phone_form' => $phoneForm->createView()
         );
     }
 
