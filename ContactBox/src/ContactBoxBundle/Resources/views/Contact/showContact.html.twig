@@ -6,6 +6,142 @@
 
 {% block body %}
 
-    {% include ('ContactBoxBundle:Contact:showContactDetails.html.twig') %}
+    <div class="row">
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default">
+                <h2>{{ contact.firstName }}</h2>
+                <h2>{{ contact.lastName }}</h2>
+                <p>{{ contact.description }}</p>
+                <p>Grupy:</p>
+                <ul>
+                    {% for group in contact.groups %}
+                        <li>
+                            {{ group.groupName }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-1">
+
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+
+                    <ul style="list-style-type: none">
+                        <li style="display: inline"><h4 style="display: inline">adres</h4></li>
+                        <li style="display: inline; float:right"><a data-toggle="modal" href="{{ path('add_address', {'id': contact.id}) }}" data-target="#addressModal">+ dodaj adres</a></li>
+                    </ul>
+
+                </div>            
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            {% for address in contact.address %}
+                                <tr>
+                                    <th>{{ address.addressType}}</th>
+                                    <td>
+                                        {{ address.city }}, {{ address.street }} {{address.houseNumber }}/{{address.apartmentNumber}}
+                                    </td>
+                                    <td style="text-align: right">
+                                        <a>edytuj</a> | 
+                                        <a>usuń</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+
+                    <ul style="list-style-type: none">
+                        <li style="display: inline"><h4 style="display: inline">e-mail</h4></li>
+                        <li style="display: inline; float:right"><a data-toggle="modal" href="{{ path('add_email', {'id': contact.id}) }}" data-target="#emailModal">+ dodaj e-mail</a></li>
+                    </ul>
+
+                </div>            
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            {% for email in contact.email %}
+                                <tr>
+                                    <th>{{ email.emailType }}</th>
+                                    <td>
+                                        {{email.email}}
+                                    </td>
+                                    <td style="text-align: right">
+                                        <a>edytuj</a> | 
+                                        <a>usuń</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+
+                    <ul style="list-style-type: none">
+                        <li style="display: inline"><h4 style="display: inline">telefon</h4></li>
+                        <li style="display: inline; float:right"><a data-toggle="modal" href="{{ path('add_phone', {'id': contact.id}) }}" data-target="#phoneModal">+ dodaj telefon</a></li>
+                    </ul>
+
+                </div>            
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            {% for phone in contact.phone %}
+                                <tr>
+                                    <th>{{ phone.phoneType }}</th>
+                                    <td>
+                                        {{ phone.phoneNumber }}
+                                    </td>
+                                    <td style="text-align: right">
+                                        <a>edytuj</a> | 
+                                        <a>usuń</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+
+    {#modal window - address #}
+    <div id="addressModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    {#modal window - email #}
+    <div id="emailModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    {#modal window - phone #}
+    <div id="phoneModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
+

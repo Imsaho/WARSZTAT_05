@@ -173,16 +173,19 @@ class ContactController extends Controller {
 
     /**
      * @Route ("/", name="show_by_name")
-     * @Template()
+     * @Template("ContactBoxBundle:Contact:showAllContacts.html.twig")
      * @Method({"POST"})
      */
     public function showContactsByNameAction(Request $request, $string) {
+        $searchForm = $this->createSearchForm();
 
         $string = $request->request->get('form')['last_name'];
 
         $em = $this->getDoctrine()->getManager();
         $contacts = $em->getRepository("ContactBoxBundle:Person")->findByFirstOrLastName($string);
-        return ['contacts' => $contacts];
+        return array('contacts' => $contacts,
+            'search_form' => $searchForm->createView()
+            );
     }
 
     /**
