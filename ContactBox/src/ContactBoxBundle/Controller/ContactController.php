@@ -131,7 +131,6 @@ class ContactController extends Controller {
 
     /**
      * @Route("/{id}/remove", name="remove")
-     * @Template("ContactBoxBundle:Contact:message.html.twig")
      */
     public function removeContactAction($id) {
         $em = $this->getDoctrine()->getManager();
@@ -139,12 +138,9 @@ class ContactController extends Controller {
         if ($person) {
             $em->remove($person);
             $em->flush();
-            return array(
-                'message' => "Kontakt został usunięty!");
-        } else {
-            return array(
-                'message' => "Brak kontaktu o tym numerze ID.");
+            return $this->redirectToRoute('show_all');
         }
+        return $this->redirectToRoute('show_all');
     }
 
     /**

@@ -28,10 +28,14 @@
                     {% for contact in contacts %}
                         <tr>
                             <th>{{ contact.firstName }} {{ contact.lastName }}</th>
-                            <td>{{ contact.email[0] }}</td>
+                            <td>
+                                {% if contact.email[0] is defined %}
+                                {{ contact.email[0] }}
+                                {% endif %}
+                                </td>
                             <td style="text-align: right">
                                 <a href="{{ path('show_by_id', {'id': contact.id}) }}">szczegóły</a> | 
-                                <a>usuń</a>
+                                <a href="{{ path('remove', {'id': contact.id}) }}">usuń</a>
                             </td>
                         </tr>
                     {% endfor %}
