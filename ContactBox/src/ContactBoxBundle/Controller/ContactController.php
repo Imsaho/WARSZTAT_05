@@ -160,7 +160,7 @@ class ContactController extends Controller {
         $phone = new Phone();
 
         $addressForm = $this->createForm(AddressFormType::class, $address);
-        $addressForm->handleRequest($request);
+
 
         $emailForm = $this->createForm(EmailFormType::class, $email);
         $emailForm->handleRequest($request);
@@ -168,14 +168,7 @@ class ContactController extends Controller {
         $phoneForm = $this->createForm(PhoneFormType::class, $phone);
         $phoneForm->handleRequest($request);
 
-        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
-            $address = $addressForm->getData();
-            $address->setPerson($person);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($address);
-            $em->flush();
-            return new Response("Dodano adres");
-        }
+
 
         if ($emailForm->isSubmitted() && $emailForm->isValid()) {
             $email = $emailForm->getData();
@@ -236,10 +229,29 @@ class ContactController extends Controller {
      * @Route("/{id}/addAddress", name="add_address")
      * @Template()
      */
-    public function addAddressAction() {
+    public function addAddressAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $person = $em->getRepository("ContactBoxBundle:Person")->find($id);
+
         $address = new Address();
         $addressForm = $this->createForm(AddressFormType::class, $address);
+        $addressForm->handleRequest($request);
+
+        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
+            $address = $addressForm->getData();
+            $address->setPerson($person);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($address);
+            $em->flush();
+
+            $url = $this->generateUrl("show_by_id", array(
+                'id' => $id));
+            $response = $this->redirect($url);
+            return $response;
+        }
+
         return array(
+            'id' => $id,
             'address_form' => $addressForm->createView()
         );
     }
