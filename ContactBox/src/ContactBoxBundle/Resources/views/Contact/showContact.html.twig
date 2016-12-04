@@ -49,8 +49,17 @@
                                         {{ address.city }}, {{ address.street }} {{address.houseNumber }}/{{address.apartmentNumber}}
                                     </td>
                                     <td style="text-align: right">
-                                        <a>edytuj</a> | 
-                                        <a>usuń</a>
+                                        <a data-toggle="modal" href="{{ path('edit_address', {'id': contact.id, 'address_id': address.id}) }}" data-target="#editAddressModal{{ address.id }}">edytuj</a> | 
+                                        <a href="{{ path('remove_address', {'id': contact.id, 'address_id': address.id }) }}">usuń</a>
+
+                                        {#modal window - edit address #}
+                                        <div id="editAddressModal{{ address.id }}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -77,8 +86,18 @@
                                         {{email.email}}
                                     </td>
                                     <td style="text-align: right">
-                                        <a>edytuj</a> | 
-                                        <a>usuń</a>
+                                        <a data-toggle="modal" href="{{ path('edit_email', {'id': contact.id, 'email_id': email.id}) }}" data-target="#editEmailModal{{ email.id }}">edytuj</a> | 
+                                        <a href="{{ path('remove_email', {'id': contact.id, 'email_id': email.id }) }}">usuń</a>
+
+                                        {#modal window - edit email #}
+                                        <div id="editEmailModal{{ email.id }}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -105,8 +124,17 @@
                                         {{ phone.phoneNumber }}
                                     </td>
                                     <td style="text-align: right">
-                                        <a>edytuj</a> | 
-                                        <a>usuń</a>
+                                        <a data-toggle="modal" href="{{ path('edit_phone', {'id': contact.id, 'phone_id': phone.id}) }}" data-target="#editPhoneModal{{ phone.id }}">edytuj</a> | 
+                                        <a href="{{ path('remove_phone', {'id': contact.id, 'phone_id': phone.id }) }}">usuń</a>
+
+                                        {#modal window - edit phone #}
+                                        <div id="editPhoneModal{{ phone.id }}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -136,6 +164,8 @@
         </div>
     </div>
 
+
+
     {#modal window - email #}
     <div id="emailModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -144,6 +174,8 @@
         </div>
     </div>
 
+
+
     {#modal window - phone #}
     <div id="phoneModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -151,6 +183,8 @@
             </div>
         </div>
     </div>
+
+
 
 {% endblock %}
 

@@ -1,0 +1,5 @@
+{% extends "ContactBoxBundle:Phone:addPhone.html.twig" %}
+
+{% block action %}
+    <form action="{{ path('edit_phone', {'id': id, 'phone_id': phone_id}) }}" method="POST">
+    {% endblock %}

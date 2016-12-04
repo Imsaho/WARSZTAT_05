@@ -1,0 +1,5 @@
+{% extends "ContactBoxBundle:Email:addEmail.html.twig" %}
+
+{% block action %}
+    <form action="{{ path('edit_email', {'id': id, 'email_id': email_id}) }}" method="POST">
+    {% endblock %}
