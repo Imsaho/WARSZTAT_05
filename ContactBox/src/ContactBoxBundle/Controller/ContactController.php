@@ -91,7 +91,7 @@ class ContactController extends Controller {
         $personForm = $this->createForm(PersonFormType::class, $person);
         $personForm->handleRequest($request);
 
-        if ($personForm->isSubmitted()) {
+        if ($personForm->isSubmitted() && $personForm->isValid()) {
             if (!$person) {
                 return new Response("Brak kontaktu o podanym ID");
             } else {
@@ -154,10 +154,10 @@ class ContactController extends Controller {
 
     /**
      * @Route ("/", name="show_by_name")
-     * @Template("ContactBoxBundle:Contact:showAllContacts.html.twig")
+     * @Template()
      * @Method({"POST"})
      */
-    public function showContactsByNameAction(Request $request, $string) {
+    public function showContactsBySearch(Request $request, $string) {
         $searchForm = $this->createSearchForm();
 
         $string = $request->request->get('form')['last_name'];
@@ -267,10 +267,6 @@ class ContactController extends Controller {
      */
     public function addGroupAction(Request $request, $id) {
         $person = $this->getDoctrine()->getRepository("ContactBoxBundle:Person")->find($id);
-        $allGroups = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findAll();
-
-        $groupName = $request->request->get('form')['group_name'];
-        $group = $this->getDoctrine()->getRepository("ContactBoxBundle:PersonGroup")->findByGroupName($groupName);
 
         $group = new PersonGroup();
 

@@ -46,7 +46,7 @@ class Person
     private $description;
     
     /**
-     * @ORM\OneToMany (targetEntity="Address", mappedBy="person")
+     * @ORM\OneToMany (targetEntity="Address", mappedBy="person", cascade={"remove"})
      */
     private $address;
     
@@ -57,12 +57,12 @@ class Person
     private $groups;
     
     /**
-     * @ORM\OneToMany (targetEntity="Email", mappedBy="person")
+     * @ORM\OneToMany (targetEntity="Email", mappedBy="person", cascade={"remove"})
      */
     private $email;
     
     /**
-     * @ORM\OneToMany (targetEntity="Phone", mappedBy="person")
+     * @ORM\OneToMany (targetEntity="Phone", mappedBy="person", cascade={"remove"})
      */
     private $phone;
     
