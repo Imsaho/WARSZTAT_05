@@ -37,18 +37,21 @@
             </ul>
         </div>
     </nav>
-
+<div class="container-fluid">
     <div class =" row">
         <div class="col-lg-2"></div>
         <div class="col-lg-10">
         {% block page_title %}{% endblock %}
     </div>
+</div>
 
 </div>
 <hr/>
-{% block body %}
+<div class="container-fluid">
+    {% block body %}
 
-{% endblock %}
+    {% endblock %}
+</div>
 
 
 <!-- jQuery -->
