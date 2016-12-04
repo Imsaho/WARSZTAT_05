@@ -1,0 +1,43 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th style="text-align: right">
+                            <a data-toggle="modal" href="{{ path('add_group') }}" data-target="#newGroupModal">+ dodaj grupę</a>
+                        </th>
+                    </tr>
+                    {% for group in groups %}
+                        <tr>
+                            <th>{{ group.groupName }}</th>
+                            <td>
+                                ilość kontaktów: {{ group.persons | length }}
+                            </td>
+                            <td style="text-align: right">
+                                <a href="">szczegóły</a> | 
+                                <a href="{{ path('remove_group', {'id': group.id}) }}">usuń</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+    {#modal window - add group #}
+    <div id="newGroupModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

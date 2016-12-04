@@ -1,0 +1,19 @@
+{% extends "ContactBoxBundle:Contact:formModalWindow.html.twig" %}
+
+{% block form %}
+
+    {% block action %}
+        <form action="{{ path('add_group') }}" method="POST">
+        {% endblock %}
+
+        {{ form_errors(group_form) }}
+
+        {{ form_row(group_form.group_name) }}
+
+        {{ form_rest(group_form) }}
+
+        <input type="submit" value="Zapisz" class="btn btn-outline btn-success btn-lg btn-block" />
+
+    </form>
+
+{% endblock %}
