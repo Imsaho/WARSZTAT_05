@@ -1,0 +1,5 @@
+{% extends "ContactBoxBundle:PersonGroup:addGroup.html.twig" %}
+
+{% block action %}
+    <form action="{{ path('edit_group', {'id': id}) }}" method="POST">
+    {% endblock %}

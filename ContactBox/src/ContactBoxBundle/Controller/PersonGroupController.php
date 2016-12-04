@@ -51,6 +51,27 @@ class PersonGroupController extends Controller {
     }
     
     /**
+     * @Route ("/group/{id}/edit", name="edit_group")
+     * @Template()
+     */
+    public function editGroupAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $group = $em->getRepository("ContactBoxBundle:PersonGroup")->find($id);
+        
+        $form = $this->createForm(PersonGroupFormType::class, $group);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $group = $form->getData();
+            $em->flush();
+            return $this->redirectToRoute('show_all_groups');
+        }
+        return array(
+            'group_form' => $form->createView(),
+            'id' => $id
+        );
+    }
+    
+    /**
      * @Route ("/group/{id}/remove", name="remove_group")
      */
     public function removeGroupAction($id) {

@@ -18,11 +18,20 @@
                         <tr>
                             <th>{{ group.groupName }}</th>
                             <td>
-                                ilość kontaktów: {{ group.persons | length }}
+                                kontakty: {{ group.persons | length }}
                             </td>
                             <td style="text-align: right">
-                                <a href="">szczegóły</a> | 
+                                <a data-toggle="modal" href="{{ path('edit_group', {'id': group.id}) }}" data-target="#editGroupModal{{ group.id }}">edytuj</a> | 
                                 <a href="{{ path('remove_group', {'id': group.id}) }}">usuń</a>
+
+                                {#modal window - edit group #}
+                                <div id="editGroupModal{{ group.id }}" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                     {% endfor %}
